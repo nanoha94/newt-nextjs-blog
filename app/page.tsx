@@ -1,8 +1,7 @@
-import Image from "next/image";
 import styles from "./page.module.css";
 import { Metadata } from "next";
 import { getArticles } from "@/lib/newt";
-import Link from "next/link";
+import { getFormattedDate } from "@/utils/formatDate";
 
 export const metadata: Metadata = {
   title: "Newt・Next.jsブログ",
@@ -24,7 +23,7 @@ export default async function Home() {
                   key={article._id}
                   className="flex flex-col lg:flex-row gap-2 lg:gap-10 mb-10 lg:mb-2"
                 >
-                  <p>{article._sys.raw.firstPublishedAt}</p>
+                  <p>{getFormattedDate(article._sys.raw.firstPublishedAt)}</p>
                   <p className="font-bold hover:text-gray-600">
                     {article.title}
                   </p>
