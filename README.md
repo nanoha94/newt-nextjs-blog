@@ -3,9 +3,10 @@
 ## 参考サイト：
 
 - [Newt と Next.js (App Router) を利用してブログを作成する](https://www.newt.so/docs/tutorials/get-contents-in-nextjs/)
-  [【Next.js × Newt】ヘッドレス CMS を使ってコーポレートサイトのニュース記事を公開する](https://zenn.dev/yunc/articles/headless-cms-newt/)
 
-- This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+- [【Next.js × Newt】ヘッドレス CMS を使ってコーポレートサイトのニュース記事を公開する](https://zenn.dev/yunc/articles/headless-cms-newt/)
+
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
 
