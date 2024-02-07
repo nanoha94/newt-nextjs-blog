@@ -24,6 +24,6 @@ export type Article = {
       width: number;
       height: number;
     };
-    body: string;
   };
+  body: string;
 };
