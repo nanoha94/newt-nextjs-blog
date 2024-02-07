@@ -2,6 +2,7 @@ import styles from "./page.module.css";
 import { Metadata } from "next";
 import { getArticles } from "@/lib/newt";
 import { getFormattedDate } from "@/utils/formatDate";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Newt・Next.jsブログ",
@@ -24,9 +25,11 @@ export default async function Home() {
                   className="flex flex-col lg:flex-row gap-2 lg:gap-10 mb-10 lg:mb-2"
                 >
                   <p>{getFormattedDate(article._sys.raw.firstPublishedAt)}</p>
-                  <p className="font-bold hover:text-gray-600">
-                    {article.title}
-                  </p>
+                  <Link href={`articles/${article.slug}`}>
+                    <p className="font-bold hover:text-gray-600">
+                      {article.title}
+                    </p>
+                  </Link>
                 </li>
               );
             })}
