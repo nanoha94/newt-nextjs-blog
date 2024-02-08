@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import type { Article } from "@/types/article";
 import { getFormattedDate } from "@/utils/formatDate";
 import "@/styles/article.scss";
-import { getThumnail } from "@/utils/thumbnail";
+import { getThumbnail } from "@/utils/thumbnail";
 import Image from "next/image";
 
 type Props = {
@@ -24,7 +24,7 @@ export const dynamicParams = false;
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = params;
   const article = await getArticleBySlug(slug);
-  const thumbnail = getThumnail(article?.thumbnail || { src: "" });
+  const thumbnail = getThumbnail(article?.thumbnail || { src: "" });
 
   const ogImageSrc: string | URL = new URL(
     article?.meta?.ogImage?.src || "http://localhost:3000"
@@ -54,7 +54,7 @@ export default async function Article({ params }: Props) {
   if (!article) {
     return <></>;
   }
-  const thumbnail = getThumnail(article?.thumbnail);
+  const thumbnail = getThumbnail(article?.thumbnail || { src: null });
 
   return (
     <main className={styles.main}>
@@ -63,15 +63,17 @@ export default async function Article({ params }: Props) {
           {getFormattedDate(article._sys.raw.firstPublishedAt)}
         </p>
         <h1 className="article-title">{article.title}</h1>
-        <figure className="mb-5 w-full aspect-[4/3] overflow-hidden rounded-lg">
-          <Image
-            src={thumbnail?.src as string}
-            alt={thumbnail?.altText as string}
-            width={thumbnail?.width}
-            height={thumbnail?.height}
-            className="w-full object-cover object-center"
-          />
-        </figure>
+        {thumbnail && (
+          <figure className="mb-5 w-full aspect-[4/3] overflow-hidden rounded-lg">
+            <Image
+              src={thumbnail?.src as string}
+              alt={thumbnail?.altText as string}
+              width={thumbnail?.width}
+              height={thumbnail?.height}
+              className="w-full object-cover object-center"
+            />
+          </figure>
+        )}
         <div
           dangerouslySetInnerHTML={{ __html: article.body }}
           className="article"

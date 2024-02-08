@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import { getArticles } from "@/lib/newt";
 import { getFormattedDate } from "@/utils/formatDate";
 import Link from "next/link";
-import { getThumnail } from "@/utils/thumbnail";
+import { getThumbnail } from "@/utils/thumbnail";
 import Image from "next/image";
 
 export const metadata: Metadata = {
@@ -21,10 +21,12 @@ export default async function Home() {
         <div className="mb-10 md:mb-20">
           <ul className="grid grid-cols-3 gap-x-5 gap-y-10">
             {articles.map((article) => {
-              const thumbnail = getThumnail({
-                ...article?.thumbnail,
-                isDefault: true,
-              });
+              const thumbnail = getThumbnail(
+                {
+                  ...article?.thumbnail,
+                  isDefault: true,
+                } || { src: null, isDefault: true }
+              );
 
               return (
                 <li key={article._id}>
@@ -32,15 +34,17 @@ export default async function Home() {
                     href={`articles/${article.slug}`}
                     className="flex flex-col transition-opacity hover:opacity-[.7]"
                   >
-                    <figure className="mb-5 w-full aspect-[4/3] overflow-hidden rounded-lg">
-                      <Image
-                        src={thumbnail?.src as string}
-                        alt={thumbnail?.altText as string}
-                        width={thumbnail?.width}
-                        height={thumbnail?.height}
-                        className="w-full object-cover object-center"
-                      />
-                    </figure>
+                    {thumbnail && (
+                      <figure className="mb-5 w-full aspect-[4/3] overflow-hidden rounded-lg">
+                        <Image
+                          src={thumbnail.src as string}
+                          alt={thumbnail.altText as string}
+                          width={thumbnail.width}
+                          height={thumbnail.height}
+                          className="w-full object-cover object-center"
+                        />
+                      </figure>
+                    )}
                     <p className="mb-2.5">
                       {getFormattedDate(article._sys.raw.firstPublishedAt)}
                     </p>
