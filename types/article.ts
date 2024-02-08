@@ -25,5 +25,11 @@ export type Article = {
       height: number;
     };
   };
+  thumbnail: {
+    src: string;
+    altTExt: string;
+    width: number;
+    height: number;
+  };
   body: string;
 };
