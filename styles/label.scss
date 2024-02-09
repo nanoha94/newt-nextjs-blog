@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .label {
+    @apply px-2 py-1 w-fit text-white text-xs font-bold bg-emerald-500 rounded-lg;
+  }
+
+  .label-button {
+    @apply px-2 py-1 w-fit text-gray-600 text-xs font-bold bg-gray-100 rounded-lg transition-colors hover:text-emerald-500 hover:bg-emerald-100;
+  }
+
+  .label-selected {
+    @apply pointer-events-none text-white bg-emerald-500;
+  }
+}
+
+@layer utilities {
+  .label-large {
+    @apply px-4 py-2 text-base;
+  }
+}

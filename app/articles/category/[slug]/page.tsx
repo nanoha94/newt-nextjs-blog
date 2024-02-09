@@ -1,27 +1,51 @@
-import styles from "./page.module.css";
-import { Metadata } from "next";
-import { getArticles, getCategories } from "@/lib/newt";
+import {
+  getArticlesByCategory,
+  getCategories,
+  getCategoryBySlug,
+} from "@/lib/newt";
+import styles from "@/app/page.module.css";
+import type { Metadata } from "next";
+import type { Article } from "@/types/article";
 import { getFormattedDate } from "@/utils/formatDate";
-import Link from "next/link";
+import "@/styles/article.scss";
 import { getThumbnail } from "@/utils/thumbnail";
 import Image from "next/image";
 import Label from "@/components/Label";
+import Link from "next/link";
 import CategoryLabelList from "@/components/CategoryLabelList";
+
+interface Props {
+  params: {
+    slug: string;
+  };
+}
 
 export const metadata: Metadata = {
   title: "Newt・Next.jsブログ",
   description: "NewtとNext.jsを利用したブログです",
 };
 
-export default async function Home() {
-  const articles = await getArticles();
+export async function generateStaticParams() {
+  const categories = await getCategories();
+  return categories.map((category) => ({
+    slug: category.slug,
+  }));
+}
+export const dynamicParams = false;
+
+export default async function Article({ params }: Props) {
+  const { slug } = params;
+  const category = await getCategoryBySlug(slug);
+  const articles = await getArticlesByCategory(category?._id || "");
+  if (!articles) {
+    return <></>;
+  }
 
   return (
     <main className={styles.main}>
       <div>
         <h1 className="text-3xl md:text-4xl mb-4 md:mb-8">ブログ一覧</h1>
-        <CategoryLabelList />
-
+        <CategoryLabelList selectedSlug={category?.slug} />
         <div className="mb-10 md:mb-20">
           <ul className="grid grid-cols-3 gap-x-5 gap-y-10">
             {articles.map((article) => {
@@ -35,7 +59,7 @@ export default async function Home() {
               return (
                 <li key={article._id}>
                   <Link
-                    href={`/articles/${article.slug}`}
+                    href={`articles/${article.slug}`}
                     className="flex flex-col transition-opacity hover:opacity-[.7]"
                   >
                     {thumbnail && (

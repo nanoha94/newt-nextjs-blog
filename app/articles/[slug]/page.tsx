@@ -6,12 +6,13 @@ import { getFormattedDate } from "@/utils/formatDate";
 import "@/styles/article.scss";
 import { getThumbnail } from "@/utils/thumbnail";
 import Image from "next/image";
+import Label from "@/components/Label";
 
-type Props = {
+interface Props {
   params: {
     slug: string;
   };
-};
+}
 
 export async function generateStaticParams() {
   const articles = await getArticles();
@@ -24,8 +25,6 @@ export const dynamicParams = false;
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = params;
   const article = await getArticleBySlug(slug);
-  const thumbnail = getThumbnail(article?.thumbnail || { src: "" });
-
   const ogImageSrc: string | URL = new URL(
     article?.meta?.ogImage?.src || "http://localhost:3000"
   );
@@ -59,9 +58,12 @@ export default async function Article({ params }: Props) {
   return (
     <main className={styles.main}>
       <div className="article-container">
-        <p className="article-published-at">
-          {getFormattedDate(article._sys.raw.firstPublishedAt)}
-        </p>
+        <div className="article-header">
+          <span className="article-published-at">
+            {getFormattedDate(article._sys.raw.firstPublishedAt)}
+          </span>
+          <Label title={article.category?.title} />
+        </div>
         <h1 className="article-title">{article.title}</h1>
         {thumbnail && (
           <figure className="mb-5 w-full aspect-[4/3] overflow-hidden rounded-lg">
